@@ -2,6 +2,8 @@ package CatalystX::Eta::Controller::ListAutocomplete;
 
 use Moose::Role;
 
+requires 'list_GET';
+
 after list_GET => sub {
     my $self = shift;
 

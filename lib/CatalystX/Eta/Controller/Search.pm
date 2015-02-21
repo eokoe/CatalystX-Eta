@@ -3,6 +3,8 @@ package CatalystX::Eta::Controller::Search;
 use Moose::Role;
 use Moose::Util::TypeConstraints;
 
+requires 'list_GET';
+
 around list_GET => sub {
     my $orig = shift;
     my $self = shift;
