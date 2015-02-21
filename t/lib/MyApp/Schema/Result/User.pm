@@ -70,7 +70,7 @@ __PACKAGE__->table("user");
   data_type: 'timestamp'
   default_value: current_timestamp
   is_nullable: 0
-  original: {default_value => \"now()"}
+  original: {default_value => \"current_timestamp"}
 
 =head2 password
 
@@ -98,13 +98,13 @@ __PACKAGE__->add_columns(
   "email",
   { data_type => "text", is_nullable => 0 },
   "active",
-  { data_type => "boolean", default_value => \"true", is_nullable => 0 },
+  { data_type => "int", default_value => "1", is_nullable => 0 },
   "created_at",
   {
     data_type     => "timestamp",
     default_value => \"current_timestamp",
     is_nullable   => 0,
-    original      => { default_value => \"now()" },
+    original      => { default_value => \"current_timestamp" },
   },
   "password",
   { data_type => "text", is_nullable => 0 },

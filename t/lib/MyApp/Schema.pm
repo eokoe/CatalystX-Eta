@@ -31,6 +31,26 @@ sub AUTOLOAD {
     goto &$AUTOLOAD;
 }
 
+sub deploy_with_users {
+    my ($self) = @_;
+
+    $self->deploy;
+
+    my $rolers = $self->resultset('Role');
+    $rolers->create({name =>'superadmin'});
+    $rolers->create({name =>'user'});
+
+    my $userrs = $self->resultset('User');
+
+    $userrs->create({
+        id    => 1,
+        name  => 'Admin',
+        email => 'superadmin@email.com',
+        password => '123'
+    })->set_roles( { name => 'superadmin' } );
+}
+
+
 # You can replace this text with custom code or comments, and it will be preserved on regeneration
 __PACKAGE__->meta->make_immutable( inline_constructor => 0 );
 1;

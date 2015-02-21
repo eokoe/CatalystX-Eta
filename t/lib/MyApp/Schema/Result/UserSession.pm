@@ -68,7 +68,7 @@ __PACKAGE__->table("user_session");
 =head2 valid_until
 
   data_type: 'timestamp'
-  default_value: (now() + '1 day'::interval)
+  default_value: (current_timestamp + '1 day'::interval)
   is_nullable: 0
 
 =head2 ts_created
@@ -76,7 +76,7 @@ __PACKAGE__->table("user_session");
   data_type: 'timestamp'
   default_value: current_timestamp
   is_nullable: 0
-  original: {default_value => \"now()"}
+  original: {default_value => \"current_timestamp"}
 
 =cut
 

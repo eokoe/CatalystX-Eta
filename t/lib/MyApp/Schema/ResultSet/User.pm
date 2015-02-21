@@ -84,7 +84,7 @@ sub action_specs {
             };
             $values{type} = $role && exists $types->{$role} ? $types->{$role} : 'unknown';
 
-            my $user = $self->create( \%values );
+            my $user = $self->create( \%values, active => 1 );
             if ($role) {
                 $user->set_roles( { name => $role } );
             }
