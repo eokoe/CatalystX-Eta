@@ -157,33 +157,202 @@ And now, with a little description:
         );
 
 
-# Depends on...
+=head2 A Controller using CatalystX::Eta::Controller::SimpleCRUD
 
-In order to extends `CatalystX::Eta::Controller::AutoObject` you need need `/error_404`  Catalyst Private action defined.
+    package MyApp::Controller::API::User;
 
-`CatalystX::Eta::Controller::SimpleCRUD` and  `CatalystX::Eta::Controller::AssignCollection` extends `CEC::AutoObject`, so you will need in a way, or in another.
+    use Moose;
 
-`CatalystX::Eta::Controller::REST` extends `Catalyst::Controller::REST` and make errors from `DBIx::Class::Exception` more 'api friendly' than HTML with '(en) Please come back later\n...'
+    BEGIN { extends 'CatalystX::Eta::Controller::REST' }
+
+    __PACKAGE__->config(
+
+        # what resultset will be on $c->stash->{collection}
+        # used by AutoBase
+        result      => 'DB::User',
+
+        # WARNING: you should never change it during "requests",
+        # or behavior may be wrong, because Controllers are Singleton objects
+        result_cond => { active => 1 },
+        result_attr => { order_by => ['me.id'] },
+
+        # where on stash the $c->stash->{collection}->next should be put
+        # used by AutoObject and others.
+        object_key => 'user',
+        # what list_GET key should put collection results.
+        list_key   => 'users',
+
+        # used by CheckRoleForPUT
+        update_roles => [qw/superadmin/],
+
+        # used by CheckRoleForPOST
+        create_roles => [qw/superadmin/],
+
+        # used by AutoResult
+        delete_roles => [qw/superadmin/],
+
+        # used by AutoList and AutoResult
+        # to generate the row.
+        build_row => sub {
+            my ( $r, $self, $c ) = @_;
+
+            return {
+                (
+                    map { $_ => $r->$_ }
+                    qw(
+                    id name email type
+                    )
+                ),
+
+            };
+        },
+
+        # change delete behavior to a update.
+        before_delete => sub {
+            my ( $self, $c, $item ) = @_;
+
+            $item->update({ active => 0 });
+
+            return 0;
+        },
+
+        # let the user search for a name using query-parameters
+        search_ok => {
+            'name' => 'Str',
+        }
+    );
+    with 'CatalystX::Eta::Controller::SimpleCRUD';
+
+    sub base : Chained('/api/base') : PathPart('users') : CaptureArgs(0) { }
+
+    # here we implement read permissons
+    after 'base' => sub {
+        my ( $self, $c ) = @_;
+
+        # if you are not a superadmin, (or, if you are a user)
+        # you can only see youself on GET /users for example.
+        $c->stash->{collection} = $c->stash->{collection}->search(
+            {
+                'me.id' => $c->user->id
+            }
+        ) if $c->check_any_user_role('user');
+
+    };
+
+    sub object : Chained('base') : PathPart('') : CaptureArgs(1) { }
+
+    sub result : Chained('object') : PathPart('') : Args(0) : ActionClass('REST') { }
+
+    sub result_GET { }
+
+    sub result_PUT { }
+
+    sub result_DELETE { }
+
+    sub list : Chained('base') : PathPart('') : Args(0) : ActionClass('REST') { }
+
+    sub list_GET { }
+
+    sub list_POST { }
+
+    1;
+
+=head2 CatalystX::Eta::Controller::AutoObject
+
+In order to use CatalystX::Eta::Controller::AutoObject you need need '/error_404' Catalyst Private action defined.
+
+=head2 CatalystX::Eta::Controller::AutoResult
+
+In order to use CatalystX::Eta::Controller::AutoResult->result_PUT you need that
+your DBIx::Class::Result have a sub execute defined.
+
+The routine will be executed as:
+
+    $result->execute(
+        $c,
+        for => 'update',
+        with => $c->req->params,
+    );
+
+You should not use $c for things differ than detach to an form_error.
+
+=head2 CatalystX::Eta::Controller::AutoList
+
+In order to use CatalystX::Eta::Controller::AutoList->list_POST you need that
+your DBIx::Class::ResultSet have a sub execute defined.
+
+The routine will be executed as:
+
+    $result->execute(
+        $c,
+        for => 'create',
+        with => $c->req->params,
+    );
+
+You should not use $c for things differ than detach to an form_error.
+
+=head2 CatalystX::Eta::Controller::REST
+
+CatalystX::Eta::Controller::REST extends `Catalyst::Controller::REST`.
 
 All your controllers should extends `CatalystX::Eta::Controller::REST`.
 
-`MyApp::TraitFor::Controller::TypesValidation` add validate_request_params use `Moose::Util::TypeConstraints::find_or_parse_type_constraint` so you can do things like:
-
-        $self->validate_request_params(
-            $c,
-            extra_days => {
-                type     => 'Int',
-                required => 0,
-            },
-            credit_card_id => {
-                type     => 'Int',
-                required => 0,
-            },
-        );
-
-on your controllers, and it does the $c->status_bad_request or $c->detach for you.
+All exceptions will be more "api friendly" than HTML with '(en) Please come back later\n...'
+Response code are set to 500, and rest response to { error => 'Internal Server Error' }
 
 
+You can also do
+
+    die \['foobar', 'something']
+
+anywhere (where the die goes freely until reach /end) and it will be
+transformed in a 400 reponse code with { error => 'form_error', form_error => { 'foobar' => 'something' } }
+
+
+=head2 MyApp::TraitFor::Controller::TypesValidation
+
+This role add a sub validate_request_params;
+
+validate_request_params uses Moose::Util::TypeConstraints::find_or_parse_type_constraint to valid content,
+so you can do things like:
+
+    $self->validate_request_params(
+        $c,
+        extra_days => {
+            type     => 'Int',
+            required => 1,
+        },
+        credit_card_id => {
+            type     => 'Int',
+            required => 0,
+        },
+    );
+
+On your controllers, and it do the $c->status_bad_request and $c->detach on invalid/missing params.
+
+=head2 CatalystX::Eta::Controller::ParamsAsArray
+
+This role add a sub params_as_array;
+
+it transform keys of a hash to array of hashes:
+
+    $self->params_as_array( 'foo', {
+        'foo:1' => 'a',
+        'bar:1' => 'b',
+        'zoo:1' => 1,
+        'zoo:2' => 2,
+    })
+
+    Returns:
+
+    [
+        { foo => 'a', zoo => 1},
+        { foo => 'b', zoo => 2}
+    ]
+
+=head1 TODO
+
+- The documentation of all modules need to be created, and this updated.
 
 
 =head1 AUTHOR
