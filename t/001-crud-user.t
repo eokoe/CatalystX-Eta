@@ -110,6 +110,34 @@ db_transaction {
         is( $me->[0]{email}, 'superadmin@email.com', 'listing ok' );
     };
 
+
+    rest_post '/users',
+      name  => 'add user',
+      stash => 'user1',
+      [
+        name     => 'Foo Bar',
+        email    => 'foox@email.com',
+        password => 'foobarquux1',
+        role     => 'user'
+      ];
+
+    rest_post '/users',
+      name    => 'try add user with same email',
+      stash   => 'user2',
+      is_fail => 1,
+      [
+        name     => 'Foo Bar',
+        email    => 'foox@email.com',
+        password => 'foobarquux1',
+        role     => 'user'
+      ];
+
+    stash_test 'user2', sub {
+        my ($me) = @_;
+        check_invalid_error 'user2', 'email', 'invalid';
+    };
+
+
 };
 
 
