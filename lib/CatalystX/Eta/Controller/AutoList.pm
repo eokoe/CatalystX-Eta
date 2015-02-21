@@ -4,7 +4,10 @@ use Moose::Role;
 requires 'list_GET';
 requires 'list_POST';
 
-around list_GET => sub {
+# inline-sub make test cover fail to compute!
+around list_GET => \&AutoList_around_list_GET;
+
+sub AutoList_around_list_GET {
     my $orig = shift;
     my $self = shift;
     my ($c)  = @_;
@@ -28,7 +31,9 @@ around list_GET => sub {
     $self->$orig(@_);
 };
 
-around list_POST => sub {
+around list_POST => \&AutoList_around_list_POST;
+
+sub AutoList_around_list_POST {
     my $orig = shift;
     my $self = shift;
     my ($c)  = @_;

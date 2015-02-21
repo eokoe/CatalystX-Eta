@@ -4,7 +4,9 @@ use Moose::Role;
 
 requires 'result_PUT';
 
-around result_PUT => sub {
+around result_PUT => \&CheckRoleForPUT_around_result_PUT;
+
+sub CheckRoleForPUT_around_result_PUT {
     my $orig   = shift;
     my $self   = shift;
     my $config = $self->config;
@@ -17,19 +19,22 @@ around result_PUT => sub {
     }
 
     if (
-           exists $config->{object_key}
+        $do_detach == 0
+        && exists $config->{object_key}
         && $c->stash->{ $config->{object_key} }
         && !$config->{check_only_roles}
         && (   $c->stash->{ $config->{object_key} }->can('id')
             || $c->stash->{ $config->{object_key} }->can('user_id')
             || $c->stash->{ $config->{object_key} }->can('created_by') )
-        && $do_detach
+
       ) {
         my $obj = $c->stash->{ $config->{object_key} };
+
         my $obj_id =
-            $obj->can('created_by') ? ( $obj->created_by || $obj->id )
+            $obj->can('created_by') ? $obj->created_by
           : $obj->can('user_id')    ? $obj->user_id
-          :                           -1;    # web api user id
+          : $obj->can('roles') && $obj->can('id') ? $obj->id # user it-self.
+          : -999; # false
 
         my $user_id = $c->user->id;
 

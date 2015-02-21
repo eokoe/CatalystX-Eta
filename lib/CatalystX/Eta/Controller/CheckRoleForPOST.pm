@@ -4,7 +4,9 @@ use Moose::Role;
 
 requires 'list_POST';
 
-around list_POST => sub {
+around list_POST => \&CheckRoleForPOST_around_list_POST;
+
+sub CheckRoleForPOST_around_list_POST {
     my $orig   = shift;
     my $self   = shift;
     my $config = $self->config;

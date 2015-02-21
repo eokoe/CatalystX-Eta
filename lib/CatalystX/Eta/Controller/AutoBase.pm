@@ -4,7 +4,9 @@ use Moose::Role;
 
 requires 'base';
 
-around base => sub {
+around base => \&AutoBase_around_base;
+
+sub AutoBase_around_base {
     my $orig = shift;
     my $self = shift;
 
@@ -15,20 +17,12 @@ around base => sub {
 
     $c->stash->{collection} = $c->model( $self->config->{result} );
 
-    if ( exists $config->{result_cond} && exists $config->{result_attr} ) {
+    if ( exists $config->{result_cond} || exists $config->{result_attr} ) {
 
         $c->stash->{collection} = $c->stash->{collection}->search( $config->{result_cond}, $config->{result_attr} );
 
     }
-    else {
-        if ( exists $config->{result_cond} ) {
-            $c->stash->{collection} = $c->stash->{collection}->search( $config->{result_cond} );
-        }
-        elsif ( exists $config->{result_attr} ) {
-            $c->stash->{collection} = $c->stash->{collection}->search( undef, $config->{result_attr} );
-        }
-    }
-};
+}
 
 1;
 

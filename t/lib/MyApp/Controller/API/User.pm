@@ -13,9 +13,9 @@ __PACKAGE__->config(
     object_key => 'user',
     list_key   => 'users',
 
-    update_roles => [qw/superadmin/],
+    update_roles => [qw/user/],
     create_roles => [qw/superadmin/],
-    delete_roles => [qw/superadmin/],
+    delete_roles => [qw/user/],
 
     build_row => sub {
         my ( $r, $self, $c ) = @_;

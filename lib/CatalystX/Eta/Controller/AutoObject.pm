@@ -3,7 +3,9 @@ package CatalystX::Eta::Controller::AutoObject;
 use Moose::Role;
 requires 'object';
 
-around object => sub {
+around object => \&AutoObject_around_object;
+
+sub AutoObject_around_object {
     my $orig   = shift;
     my $self   = shift;
     my $config = $self->config;

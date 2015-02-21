@@ -5,7 +5,9 @@ requires 'result_GET';
 requires 'result_PUT';
 requires 'result_DELETE';
 
-around result_GET => sub {
+around result_GET => \&AutoResult_around_result_GET;
+
+sub AutoResult_around_result_GET {
     my $orig = shift;
     my $self = shift;
     my ($c)  = @_;
@@ -21,7 +23,9 @@ around result_GET => sub {
     $self->$orig(@_);
 };
 
-around result_PUT => sub {
+around result_PUT => \&AutoResult_around_result_PUT;
+
+sub AutoResult_around_result_PUT {
     my $orig = shift;
     my $self = shift;
     my ($c)  = @_;
@@ -45,7 +49,9 @@ around result_PUT => sub {
 
 };
 
-around result_DELETE => sub {
+around result_DELETE => \&AutoResult_around_result_DELETE;
+
+sub AutoResult_around_result_DELETE {
     my $orig      = shift;
     my $self      = shift;
     my ($c)       = @_;
@@ -61,18 +67,20 @@ around result_DELETE => sub {
     }
 
     if (
-           exists $config->{object_key}
+        $do_detach == 0
+        && exists $config->{object_key}
         && $c->stash->{ $config->{object_key} }
         && (   $c->stash->{ $config->{object_key} }->can('id')
             || $c->stash->{ $config->{object_key} }->can('user_id')
             || $c->stash->{ $config->{object_key} }->can('created_by') )
-        && $do_detach
       ) {
         my $obj = $c->stash->{ $config->{object_key} };
         my $obj_id =
             $obj->can('created_by') ? $obj->created_by
           : $obj->can('user_id')    ? $obj->user_id
-          :                           -1;                # web-api user id
+          : $obj->can('roles') && $obj->can('id') ? $obj->id # user it-self.
+          : -999; # false
+
         my $user_id = $c->user->id;
 
         $self->status_forbidden( $c, message => $config->{object_key} . ".invalid [$obj_id!=$user_id]", ), $c->detach

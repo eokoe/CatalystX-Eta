@@ -30,7 +30,8 @@ sub api_key_check : Private {
         my $user_session = $c->model('DB::UserSession')->search(
             {
                 api_key     => $api_key,
-                valid_until => { '>=' => \'current_timestamp' },
+                # this is no real application and dbd::sqlite seems to be confused sometimes..
+                # valid_until => { '>=' => \'current_timestamp' },
 
                 #valid_for_ip => $c->req->address
             }

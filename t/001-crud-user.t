@@ -24,7 +24,7 @@ api_auth_as user_id => 1;
 db_transaction {
 
     rest_post '/users',
-      name  => 'criar usuario',
+      name  => 'criar user',
       list  => 1,
       stash => 'user',
       [
@@ -33,8 +33,6 @@ db_transaction {
         password => 'foobarquux1',
         role     => 'user'
       ];
-
-
 
     stash_test 'user.get', sub {
         my ($me) = @_;
@@ -57,13 +55,27 @@ db_transaction {
     };
 
     rest_put stash 'user.url',
-      name => 'atualizar usuario',
+      name => 'update user fail',
+      is_fail => 1,
+      code => 403,
       [
         name     => 'AAAAAAAAA',
         email    => 'foo2@email.com',
         password => 'foobarquux1',
         role     => 'user'
       ];
+
+    api_auth_as user_id => stash 'user.id';
+    rest_put stash 'user.url',
+      name => 'update user ',
+      [
+        name     => 'AAAAAAAAA',
+        email    => 'foo2@email.com',
+        password => 'foobarquux1',
+        role     => 'user'
+      ];
+
+    api_auth_as user_id => 1;
 
     rest_reload 'user';
 
@@ -73,7 +85,10 @@ db_transaction {
         is( $me->{email}, 'foo2@email.com', 'email updated!' );
     };
 
+    api_auth_as user_id => stash 'user.id';
     rest_delete stash 'user.url';
+
+    api_auth_as user_id => 1;
 
     rest_reload 'user', code => 404;
 

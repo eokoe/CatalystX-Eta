@@ -4,7 +4,9 @@ use Moose::Role;
 
 requires 'list_GET';
 
-after list_GET => sub {
+after list_GET => \&ListAutocomplete_list_get;
+
+sub ListAutocomplete_list_get {
     my $self = shift;
 
     my ($c) = @_;

@@ -5,7 +5,9 @@ use Moose::Util::TypeConstraints;
 
 requires 'list_GET';
 
-around list_GET => sub {
+around list_GET => \&Search_arround_list_GET;
+
+sub Search_arround_list_GET{
     my $orig = shift;
     my $self = shift;
 
