@@ -328,6 +328,27 @@ it transform keys of a hash to array of hashes:
         { foo => 'b', zoo => 2}
     ]
 
+# Tests Coverage
+
+This is the first version, and need a lot of progress on tests.
+
+    @ version 0.01
+    ---------------------------- ------ ------ ------ ------ ------ ------ ------
+    File                           stmt   bran   cond    sub    pod   time  total
+    ---------------------------- ------ ------ ------ ------ ------ ------ ------
+    ...ta/Controller/AutoBase.pm  100.0   50.0   33.3  100.0    n/a   29.5   83.3
+    ...ta/Controller/AutoList.pm  100.0   50.0   33.3  100.0    n/a    1.5   87.8
+    .../Controller/AutoObject.pm  100.0   75.0    n/a  100.0    n/a    0.7   94.4
+    .../Controller/AutoResult.pm   93.3   50.0   33.3  100.0    n/a    0.6   71.4
+    ...oller/CheckRoleForPOST.pm   84.6   50.0    n/a  100.0    n/a    0.0   82.3
+    ...roller/CheckRoleForPUT.pm  100.0   64.2   44.4  100.0    n/a    0.0   72.7
+    ...tX/Eta/Controller/REST.pm   57.7   16.6   30.4  100.0   50.0   62.1   49.4
+    .../Eta/Controller/Search.pm   32.7   10.0   11.1  100.0    n/a    0.3   25.7
+    .../Controller/SimpleCRUD.pm  100.0    n/a    n/a  100.0    n/a    0.1  100.0
+    ...atalystX/Eta/Test/REST.pm   93.3   83.3    n/a  100.0    0.0    4.8   88.4
+    Total                          74.4   39.0   32.3  100.0   33.3  100.0   61.5
+    ---------------------------- ------ ------ ------ ------ ------ ------ ------
+
 # TODO
 
 \- The documentation of all modules need to be created, and this updated.
