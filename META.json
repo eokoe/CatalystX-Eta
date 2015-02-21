@@ -1,0 +1,68 @@
+{
+   "abstract" : "Mostly, Controller's Moose::Roles for easy CRUD/Validation API's",
+   "author" : [
+      "Renato CRON <rentocron@cpan.org>"
+   ],
+   "dynamic_config" : 0,
+   "generated_by" : "Dist::Zilla version 5.024, Dist::Milla version v1.0.9, CPAN::Meta::Converter version 2.142690",
+   "license" : [
+      "perl_5"
+   ],
+   "meta-spec" : {
+      "url" : "http://search.cpan.org/perldoc?CPAN::Meta::Spec",
+      "version" : "2"
+   },
+   "name" : "CatalystX-Eta",
+   "no_index" : {
+      "directory" : [
+         "t",
+         "xt",
+         "inc",
+         "share",
+         "eg",
+         "examples"
+      ]
+   },
+   "prereqs" : {
+      "configure" : {
+         "requires" : {
+            "Module::Build::Tiny" : "0.039"
+         }
+      },
+      "develop" : {
+         "requires" : {
+            "Dist::Milla" : "v1.0.9",
+            "Test::Pod" : "1.41"
+         }
+      },
+      "runtime" : {
+         "requires" : {
+            "Moose::Role" : "0",
+            "Stash::REST" : "0.06",
+            "perl" : "5.008005"
+         }
+      },
+      "test" : {
+         "requires" : {
+            "Catalyst::Runtime" : "5.90080"
+         }
+      }
+   },
+   "release_status" : "stable",
+   "resources" : {
+      "bugtracker" : {
+         "web" : "https://github.com/AwareTI/CatalystX-Eta/issues"
+      },
+      "homepage" : "https://github.com/AwareTI/CatalystX-Eta",
+      "repository" : {
+         "type" : "git",
+         "url" : "https://github.com/AwareTI/CatalystX-Eta.git",
+         "web" : "https://github.com/AwareTI/CatalystX-Eta"
+      }
+   },
+   "version" : "0.01",
+   "x_contributors" : [
+      "Renato CRON <renato.cron@gmail.com>"
+   ]
+}
+
