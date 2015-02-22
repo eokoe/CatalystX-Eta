@@ -66,8 +66,9 @@ sub AutoResult_around_result_DELETE {
         $do_detach = 1;
     }
 
+    # if he does not have the role, but is the creator...
     if (
-        $do_detach == 0
+        $do_detach == 1
         && exists $config->{object_key}
         && $c->stash->{ $config->{object_key} }
         && (   $c->stash->{ $config->{object_key} }->can('id')
