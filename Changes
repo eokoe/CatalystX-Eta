@@ -1,6 +1,8 @@
 Revision history for CatalystX-Eta
 
 {{$NEXT}}
+
+0.02  2015-02-21 22:55:08 BRST
     - CheckRoleForPUT and roles_delete fixed:
       if the user requesting delete or update have the role,
       the action will be executed.
