@@ -1,6 +1,12 @@
 Revision history for CatalystX-Eta
 
 {{$NEXT}}
+    - CheckRoleForPUT and roles_delete fixed:
+      if the user requesting delete or update have the role,
+      the action will be executed.
+      if the role was denied and config->{check_only_roles} is not set,
+        the code test if the object have the column (user_id | created_by ) and
+        if is equals $c->user->id, the action is executed even without the role.
 
 0.01  2015-02-21 04:39:27 BRST
 
