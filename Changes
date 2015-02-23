@@ -1,6 +1,8 @@
 Revision history for CatalystX-Eta
 
 {{$NEXT}}
+
+0.03  2015-02-23 16:37:14 BRT
     - prepare_params_for_create and prepare_params_for_update added
       Those options is for changing params before send them to schema.
         sub { my ($self, $c, $params_hashref) = @_; return $params_hashref }
