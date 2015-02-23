@@ -33,10 +33,19 @@ sub AutoResult_around_result_PUT {
     my $something = $c->stash->{ $self->config->{object_key} };
 
     my $data_from = $self->config->{data_from_body} ? 'data' : 'params';
+
+    my $params = {%{ $c->req->$data_from }};
+    if (
+        exists $self->config->{prepare_params_for_update} &&
+        ref $self->config->{prepare_params_for_update} eq 'CODE'
+    ){
+        $params = $self->config->{prepare_params_for_update}->($self, $c, $params);
+    }
+
     $something->execute(
         $c,
         for => ( exists $c->stash->{result_put_for} ? $c->stash->{result_put_for} : 'update' ),
-        with => $c->req->$data_from,
+        with => $params,
     );
 
     $self->status_accepted(

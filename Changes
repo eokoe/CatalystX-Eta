@@ -1,6 +1,10 @@
 Revision history for CatalystX-Eta
 
 {{$NEXT}}
+    - prepare_params_for_create and prepare_params_for_update added
+      Those options is for changing params before send them to schema.
+        sub { my ($self, $c, $params_hashref) = @_; return $params_hashref }
+      must return HASHREF for using on $result(set)->execute( with => $params )
 
 0.02  2015-02-21 22:55:08 BRST
     - CheckRoleForPUT and roles_delete fixed:

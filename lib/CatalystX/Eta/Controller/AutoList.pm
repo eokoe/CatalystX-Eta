@@ -42,11 +42,19 @@ sub AutoList_around_list_POST {
 
     $self->status_bad_request( $c, message => 'missing data' ), $c->detach unless ref $c->req->$data_from eq 'HASH';
 
+    my $params = {%{ $c->req->$data_from }};
+    if (
+        exists $self->config->{prepare_params_for_create} &&
+        ref $self->config->{prepare_params_for_create} eq 'CODE'
+    ){
+        $params = $self->config->{prepare_params_for_create}->($self, $c, $params);
+    }
+
     my $something = $c->model( $self->config->{result} )->execute(
         $c,
         for  => 'create',
         with => {
-            %{ $c->req->$data_from },
+            %$params,
             created_by => $c->user->id,
             user_id    => $c->user->id,
         }
@@ -60,7 +68,7 @@ sub AutoList_around_list_POST {
         }
     );
 
-    $self->$orig(@_);
+    $self->$orig(@_, $something );
 
     return 1;
 };
