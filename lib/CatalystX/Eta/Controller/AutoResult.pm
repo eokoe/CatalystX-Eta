@@ -48,9 +48,10 @@ sub AutoResult_around_result_PUT {
         with => $params,
     );
 
+
     $self->status_accepted(
         $c,
-        location => $c->uri_for( $self->action_for('result'), [ @{$c->req->captures}, $something->id ] )->as_string,
+        location => $c->uri_for( $self->action_for('result'), [ @{$c->req->captures} ] )->as_string,
         entity => { id => $something->id }
     ) if $something;
 
