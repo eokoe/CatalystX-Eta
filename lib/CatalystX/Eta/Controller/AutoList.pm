@@ -62,7 +62,7 @@ sub AutoList_around_list_POST {
 
     $self->status_created(
         $c,
-        location => $c->uri_for( $self->action_for('result'), [ $something->id ] )->as_string,
+        location => $c->uri_for( $self->action_for('result'), [ @{$c->req->captures}, $something->id ] )->as_string,
         entity => {
             id => $something->id
         }

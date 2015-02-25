@@ -1,6 +1,8 @@
 Revision history for CatalystX-Eta
 
 {{$NEXT}}
+    - Added @{$c->req->captures} before calling $c->action_for
+      This fixes a bug when you have deep controller actions.
 
 0.03  2015-02-23 16:37:14 BRT
     - prepare_params_for_create and prepare_params_for_update added
