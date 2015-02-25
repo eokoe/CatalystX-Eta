@@ -1,6 +1,8 @@
 Revision history for CatalystX-Eta
 
 {{$NEXT}}
+
+0.035  2015-02-25 15:03:12 BRT
     - Added @{$c->req->captures} before calling $c->action_for
       This fixes a bug when you have deep controller actions.
 
