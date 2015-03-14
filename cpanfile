@@ -16,5 +16,6 @@ on test => sub {
     requires 'Catalyst::Plugin::Authorization::Roles';
     requires 'DBIx::Class::PassphraseColumn';
     requires 'DBIx::Class::TimeStamp';
+    requires 'JSON::MaybeXS';
 
 };
