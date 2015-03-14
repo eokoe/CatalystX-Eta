@@ -1,6 +1,8 @@
 Revision history for CatalystX-Eta
 
 {{$NEXT}}
+
+0.0362  2015-03-14 01:23:58 BRT
     - missing JSON::MaybeXS on cpanfile.
 
 0.036  2015-03-14 01:18:50 BRT

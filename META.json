@@ -51,6 +51,7 @@
             "Catalyst::Runtime" : "5.90080",
             "DBIx::Class::PassphraseColumn" : "0",
             "DBIx::Class::TimeStamp" : "0",
+            "JSON::MaybeXS" : "0",
             "Test::More" : "0"
          }
       }
@@ -67,7 +68,7 @@
          "web" : "https://github.com/AwareTI/CatalystX-Eta"
       }
    },
-   "version" : "0.036",
+   "version" : "0.0362",
    "x_contributors" : [
       "Renato CRON <renato.cron@gmail.com>"
    ]
