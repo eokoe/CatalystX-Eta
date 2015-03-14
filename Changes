@@ -1,6 +1,8 @@
 Revision history for CatalystX-Eta
 
 {{$NEXT}}
+
+0.036  2015-03-14 01:18:50 BRT
     - Added CatalystX::Eta::Controller::Order:
       - but doc is missing!
     - JSON::XS now is JSON::MaybeXS

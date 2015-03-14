@@ -4,7 +4,7 @@ package CatalystX::Eta;
 
 use strict;
 use 5.008_005;
-our $VERSION = '0.035';
+our $VERSION = '0.036';
 
 # no code, you should not use this package directly
 
