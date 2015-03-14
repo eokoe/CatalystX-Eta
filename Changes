@@ -2,6 +2,14 @@ Revision history for CatalystX-Eta
 
 {{$NEXT}}
 
+    - new classes added:
+        - CatalystX::Temporal::Controller::AutoBase
+        - CatalystX::Temporal::Controller::AutoList
+        - CatalystX::Temporal::Controller::AutoObject
+        - CatalystX::Temporal::Controller::AutoResult
+        - CatalystX::Helper::DateTimeToString
+    - Missing Data::Verifier on cpanfile
+
 0.0362  2015-03-14 01:23:58 BRT
     - missing JSON::MaybeXS on cpanfile.
 

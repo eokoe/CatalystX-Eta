@@ -17,5 +17,6 @@ on test => sub {
     requires 'DBIx::Class::PassphraseColumn';
     requires 'DBIx::Class::TimeStamp';
     requires 'JSON::MaybeXS';
+    requires 'Data::Verifier';
 
 };
