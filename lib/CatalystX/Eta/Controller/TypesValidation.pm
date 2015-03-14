@@ -2,7 +2,7 @@ package CatalystX::Eta::Controller::TypesValidation;
 
 use Moose::Role;
 use Moose::Util::TypeConstraints;
-use JSON::XS;
+use JSON::MaybeXS;
 
 sub validate_request_params {
     my $self = shift;

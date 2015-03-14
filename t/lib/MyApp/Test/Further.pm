@@ -9,7 +9,7 @@ use Carp;
 use Digest::SHA1 qw(sha1_hex);
 use CatalystX::Eta::Test::REST;
 
-use JSON::XS;
+use JSON::MaybeXS;
 use Test::More;
 
 use Catalyst::Test q(MyApp);

@@ -5,7 +5,7 @@ use namespace::autoclean;
 BEGIN { extends 'Catalyst::Controller::REST'; }
 __PACKAGE__->config( default => 'application/json', );
 use utf8;
-use JSON::XS;
+use JSON::MaybeXS;
 
 #
 # Sets the actions in this controller to be registered with no prefix

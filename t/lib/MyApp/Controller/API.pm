@@ -7,7 +7,7 @@ use namespace::autoclean;
 BEGIN { extends 'Catalyst::Controller::REST'; }
 __PACKAGE__->config( default => 'application/json', );
 
-use Crypt::PRNG qw/random_bytes_hex/;
+
 
 use Time::HiRes qw(time);
 
@@ -63,7 +63,7 @@ sub login_POST {
     if ( $c->authenticate( $c->req->params ) ) {
         my $item = $c->user->sessions->create(
             {
-                api_key      => random_bytes_hex(22),
+                api_key      => 'test-key-' . int(rand(time)), # for test-only!
                 valid_for_ip => $c->req->address
             }
         );

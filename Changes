@@ -1,6 +1,10 @@
 Revision history for CatalystX-Eta
 
 {{$NEXT}}
+    - Added CatalystX::Eta::Controller::Order:
+      - but doc is missing!
+    - JSON::XS now is JSON::MaybeXS
+    - minor fixs
 
 0.035  2015-02-25 15:03:12 BRT
     - Added @{$c->req->captures} before calling $c->action_for

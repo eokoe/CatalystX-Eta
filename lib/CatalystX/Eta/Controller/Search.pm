@@ -35,8 +35,7 @@ sub Search_arround_list_GET{
                     if ( exists $c->req->params->{"$key_ok:$exp"} ) {
                         my $tmp = "$exp";    # not more read only
                         $tmp =~ s/^(\+)?//;
-                        my $gp = $1 eq '+' ? '-and' : '-or';
-
+                        my $gp = $1 && $1 eq '+' ? '-and' : '-or';
                         push @{ $may_search{$key_ok}{$gp} }, { $tmp => $c->req->params->{"$key_ok:$exp"} };
                     }
                 }
@@ -85,6 +84,7 @@ sub Search_arround_list_GET{
         }
     }
 
+    my $base = $self->config->{search_base} || 'me';
     foreach my $k ( keys %may_search ) {
         if ( $k !~ /\./ ) {
             my $such_val = delete $may_search{$k};
@@ -93,13 +93,15 @@ sub Search_arround_list_GET{
 
                 for my $op ( keys %$such_val ) {
 
-                    push @{ $may_search{$op} }, map { +{ "me.$k" => $_ } } @{ $such_val->{$op} };
+                    push @{ $may_search{$op} }, map { +{ "$base.$k" => $_ } } @{ $such_val->{$op} };
                 }
 
             }
             else {
-                $may_search{"me.$k"} = $such_val;
+                $may_search{"$base.$k"} = $such_val;
             }
+        }else{
+            die 'TODO...';
         }
     }
 
