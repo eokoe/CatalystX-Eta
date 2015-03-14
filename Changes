@@ -1,6 +1,7 @@
 Revision history for CatalystX-Eta
 
 {{$NEXT}}
+    - missing JSON::MaybeXS on cpanfile.
 
 0.036  2015-03-14 01:18:50 BRT
     - Added CatalystX::Eta::Controller::Order:
