@@ -2,6 +2,8 @@ Revision history for CatalystX-Eta
 
 {{$NEXT}}
 
+0.04  2015-03-14 14:59:58 BRT
+
     - new classes added:
         - CatalystX::Temporal::Controller::AutoBase
         - CatalystX::Temporal::Controller::AutoList
