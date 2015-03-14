@@ -29,8 +29,9 @@ sub Search_arround_list_GET{
 
             }
             else {
+                my $type = $self->config->{search_ok}{$key_ok};
 
-                for my $exp (qw|< > >= <= +< +> +>= +<=|) {
+                for my $exp (qw|< > >= <= +< +> +>= +<=|, ( $type eq 'Str' ? qw/like ilike/ : ())) {
 
                     if ( exists $c->req->params->{"$key_ok:$exp"} ) {
                         my $tmp = "$exp";    # not more read only
@@ -59,7 +60,7 @@ sub Search_arround_list_GET{
 
         if ( ref $val eq 'HASH' ) {
 
-            # much groups
+            # many groups
             foreach my $gp ( keys %$val ) {
 
                 foreach my $a_val ( @{ $val->{$gp} } ) {
@@ -86,23 +87,19 @@ sub Search_arround_list_GET{
 
     my $base = $self->config->{search_base} || 'me';
     foreach my $k ( keys %may_search ) {
-        if ( $k !~ /\./ ) {
-            my $such_val = delete $may_search{$k};
+        my $on_table = $k !~ /\./ ? "$base.$k" : "$k";
 
-            if ( ref $such_val eq 'HASH' ) {
+        my $such_val = delete $may_search{$k};
 
-                for my $op ( keys %$such_val ) {
-
-                    push @{ $may_search{$op} }, map { +{ "$base.$k" => $_ } } @{ $such_val->{$op} };
-                }
-
+        if ( ref $such_val eq 'HASH' ) {
+            for my $op ( keys %$such_val ) {
+                push @{ $may_search{$op} }, map { +{ $on_table => $_ } } @{ $such_val->{$op} };
             }
-            else {
-                $may_search{"$base.$k"} = $such_val;
-            }
-        }else{
-            die 'TODO...';
         }
+        else {
+            $may_search{$on_table} = $such_val;
+        }
+
     }
 
     $c->stash->{collection} = $c->stash->{collection}->search( {%may_search} )

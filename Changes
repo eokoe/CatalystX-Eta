@@ -1,6 +1,8 @@
 Revision history for CatalystX-Eta
 
 {{$NEXT}}
+    - Controller::Search now can accept ilike and like filters.
+    - Controller::Search now can accept 'me.field' and 'othertable.field' too
 
 0.04  2015-03-14 14:59:58 BRT
 
