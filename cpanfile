@@ -5,6 +5,8 @@ requires 'Stash::REST', 0.06;
 
 requires 'DBIx::Class';
 
+requires 'Catalyst::Controller::REST';
+
 on test => sub {
     requires 'Catalyst::Runtime', '5.90080';
 
@@ -19,6 +21,9 @@ on test => sub {
     requires 'JSON::MaybeXS';
     requires 'Data::Verifier';
     requires 'Data::Manager';
-    requires 'Catalyst::Controller::REST';
+    requires 'MooseX::MarkAsMethods';
+    requires 'MooseX::NonMoose';
+    requires 'namespace::autoclean';
+    requires 'Data::Diver';
 
 };

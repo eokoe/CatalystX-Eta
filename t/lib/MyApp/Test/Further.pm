@@ -6,7 +6,7 @@ use utf8;
 use URI;
 
 use Carp;
-use Digest::SHA1 qw(sha1_hex);
+
 use CatalystX::Eta::Test::REST;
 
 use JSON::MaybeXS;
@@ -102,7 +102,7 @@ sub api_auth_as {
 
         my $item = $user->sessions->create(
             {
-                api_key => sha1_hex( rand(time) )
+                api_key => int( rand(time) )
             }
         );
 

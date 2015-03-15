@@ -7,10 +7,6 @@ use namespace::autoclean;
 BEGIN { extends 'Catalyst::Controller::REST'; }
 __PACKAGE__->config( default => 'application/json', );
 
-
-
-use Time::HiRes qw(time);
-
 sub api_key_check : Private {
     my ( $self, $c ) = @_;
 
