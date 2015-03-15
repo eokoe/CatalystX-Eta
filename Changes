@@ -1,6 +1,8 @@
 Revision history for CatalystX-Eta
 
 {{$NEXT}}
+
+0.043  2015-03-14 23:39:10 BRT
     - added Catalyst::Controller::REST to cpanfile
     - added Data::Manager to cpanfile (test dep)
 
