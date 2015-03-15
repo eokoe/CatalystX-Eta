@@ -1,6 +1,7 @@
 Revision history for CatalystX-Eta
 
 {{$NEXT}}
+    - added Catalyst::Controller::REST and Data::Manager to cpanfile
 
 0.042  2015-03-14 16:01:35 BRT
     - Controller::Search now can accept ilike and like filters.

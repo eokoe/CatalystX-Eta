@@ -18,5 +18,7 @@ on test => sub {
     requires 'DBIx::Class::TimeStamp';
     requires 'JSON::MaybeXS';
     requires 'Data::Verifier';
+    requires 'Data::Manager';
+    requires 'Catalyst::Controller::REST';
 
 };

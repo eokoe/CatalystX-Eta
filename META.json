@@ -45,12 +45,14 @@
       },
       "test" : {
          "requires" : {
+            "Catalyst::Controller::REST" : "0",
             "Catalyst::Model::DBIC::Schema" : "0",
             "Catalyst::Plugin::Authentication" : "0",
             "Catalyst::Plugin::Authorization::Roles" : "0",
             "Catalyst::Runtime" : "5.90080",
             "DBIx::Class::PassphraseColumn" : "0",
             "DBIx::Class::TimeStamp" : "0",
+            "Data::Manager" : "0",
             "Data::Verifier" : "0",
             "JSON::MaybeXS" : "0",
             "Test::More" : "0"
@@ -69,7 +71,7 @@
          "web" : "https://github.com/AwareTI/CatalystX-Eta"
       }
    },
-   "version" : "0.042",
+   "version" : "0.043",
    "x_contributors" : [
       "Renato CRON <renato.cron@gmail.com>"
    ]
