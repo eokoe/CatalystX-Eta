@@ -25,5 +25,8 @@ on test => sub {
     requires 'MooseX::NonMoose';
     requires 'namespace::autoclean';
     requires 'Data::Diver';
-
+    requires 'Catalyst::Plugin::Static::Simple';
+    requires 'Catalyst::Plugin::ConfigLoader';
+    requires 'Catalyst::Authentication::Store::DBIx::Class';
+    requires 'MooseX::Types::Email';
 };
