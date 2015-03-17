@@ -44,7 +44,7 @@ sub AutoList_around_list_GET {
     my @all_rows = $c->stash->{collection}->all;
     foreach my $obj (@all_rows) {
         my $data_row = $obj->$name->next;
-        my $data = $data_row ? $func->( $data_row, $self, $c ) : undef;
+        my $data = $data_row ? $func->( $data_row, $self, $c, $obj ) : undef;
 
         push @rows, {
             created_at => $self->_ts_as_string( $obj->created_at ),

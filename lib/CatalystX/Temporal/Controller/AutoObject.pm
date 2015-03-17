@@ -12,8 +12,10 @@ sub AutoObject_around_object {
 
     my ( $c, $id ) = @_;
 
+    my $id_can_de_negative = $self->config->{id_can_de_negative} ? '-?' : '';
+
     $self->status_bad_request( $c, message => 'invalid.int' ), $c->detach
-      unless $id =~ /^[0-9]+$/;
+      unless $id =~ /^$id_can_de_negative[0-9]+$/;
 
     my $name = $self->config->{data_related_as};
 

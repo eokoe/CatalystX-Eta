@@ -1,6 +1,8 @@
 Revision history for CatalystX-Eta
 
 {{$NEXT}}
+    - $obj passed on each callback on CatalystX::Temporal::Controller::{AutoList|AutoObject} as last param
+    - optional id_can_be_negative => 1 config for accept negative ids on object chain
 
 0.043  2015-03-14 23:39:10 BRT
     - added Catalyst::Controller::REST to cpanfile

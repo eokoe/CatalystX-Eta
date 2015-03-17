@@ -29,7 +29,7 @@ sub AutoResult_around_result_GET {
     my $func = $self->config->{build_row};
 
     foreach ( sort { $b->valid_to <=> $a->valid_to } $obj->$name->all ) {
-        my $ret = $func->( $_, $self, $c );
+        my $ret = $func->( $_, $self, $c, $obj );
         push @{ $ref->{data} }, $ret;
     }
 
