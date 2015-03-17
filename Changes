@@ -1,6 +1,8 @@
 Revision history for CatalystX-Eta
 
 {{$NEXT}}
+
+0.044  2015-03-17 19:40:06 BRT
     - $obj passed on each callback on CatalystX::Temporal::Controller::{AutoList|AutoObject} as last param
     - optional id_can_be_negative => 1 config for accept negative ids on object chain
 
