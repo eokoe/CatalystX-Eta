@@ -25,6 +25,8 @@ sub AutoResult_around_result_GET {
         },
     };
 
+    my $return_data_as = $self->config->{return_data_as} ? lc $self->config->{return_data_as} : 'array';
+
     my $name = $self->config->{data_related_as};
     my $func = $self->config->{build_row};
 
@@ -32,6 +34,8 @@ sub AutoResult_around_result_GET {
         my $ret = $func->( $_, $self, $c, $obj );
         push @{ $ref->{data} }, $ret;
     }
+
+    $ref->{data} = $ref->{data}[0] if ( $return_data_as eq 'hash' && @{ $ref->{data} } == 1 );
 
     $self->status_ok( $c, entity => $ref );
 

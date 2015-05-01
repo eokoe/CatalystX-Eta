@@ -18,6 +18,8 @@ sub AutoList_around_list_GET {
 
     my $name = $self->config->{data_related_as};
 
+    my $return_data_as = $self->config->{return_data_as} ? lc $self->config->{return_data_as} : 'hash';
+
     my $with_deleted = $c->req->params->{with_deleted};
     unless ($with_deleted) {
         $c->stash->{collection} = $c->stash->{collection}->search(
@@ -63,7 +65,7 @@ sub AutoList_around_list_GET {
                     },
                     deleted_at => $self->_ts_as_string( $obj->deleted_at ),
                   )
-                : ( data => $data )
+                : ( data => $return_data_as eq 'hash' ? $data : [ $data ? ($data) : ()] )
             )
         };
     }
