@@ -1,6 +1,13 @@
 Revision history for CatalystX-Eta
 
 {{$NEXT}}
+    - return_data_as added. it accept 'hash' or 'array' and it is used by
+         CatalystX::Temporal::Controller::AutoResult
+        and
+         CatalystX::Temporal::Controller::AutoList
+        if return_data_as is set to 'hash', when no history is asked, the return
+        is an hash instead of an array (like the list)
+         # $ref->{data} = $ref->{data}[0] if ( $return_data_as eq 'hash' && !exists $c->req->params->{with_history} );
 
 0.044  2015-03-17 19:40:06 BRT
     - $obj passed on each callback on CatalystX::Temporal::Controller::{AutoList|AutoObject} as last param

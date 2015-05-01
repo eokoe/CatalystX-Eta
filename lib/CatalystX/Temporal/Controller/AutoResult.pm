@@ -35,7 +35,7 @@ sub AutoResult_around_result_GET {
         push @{ $ref->{data} }, $ret;
     }
 
-    $ref->{data} = $ref->{data}[0] if ( $return_data_as eq 'hash' && @{ $ref->{data} } == 1 );
+    $ref->{data} = $ref->{data}[0] if ( $return_data_as eq 'hash' && !exists $c->req->params->{with_history} );
 
     $self->status_ok( $c, entity => $ref );
 
