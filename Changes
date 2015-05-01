@@ -1,6 +1,8 @@
 Revision history for CatalystX-Eta
 
 {{$NEXT}}
+
+0.045  2015-05-01 18:50:32 BRT
     - return_data_as added. it accept 'hash' or 'array' and it is used by
          CatalystX::Temporal::Controller::AutoResult
         and
