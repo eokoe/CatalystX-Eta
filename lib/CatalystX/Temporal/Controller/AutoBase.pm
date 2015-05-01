@@ -26,14 +26,14 @@ sub AutoBase_around_base {
     if ( $c->req->params->{with_deleted} ) {
         $c->stash->{base_collection} = $c->stash->{base_collection}->search(
             {
-                deleted_at => { '!=' => 'infinity' }
+                'me.deleted_at' => { '!=' => 'infinity' }
             }
         );
     }
     else {
         $c->stash->{base_collection} = $c->stash->{base_collection}->search(
             {
-                deleted_at => 'infinity'
+                'me.deleted_at' => 'infinity'
             },
             {
                 prefetch => { $name => [ 'created_by', 'deleted_by' ] }

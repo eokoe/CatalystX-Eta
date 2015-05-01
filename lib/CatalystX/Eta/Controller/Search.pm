@@ -16,7 +16,7 @@ sub Search_arround_list_GET{
     #print "      Search::around list_GET \n";
 
     my %may_search;
-
+use DDP; p $self->config;
     if ( exists $self->config->{search_ok} ) {
         foreach my $key_ok ( keys %{ $self->config->{search_ok} } ) {
             if ( exists $c->req->params->{$key_ok} ) {
@@ -101,7 +101,7 @@ sub Search_arround_list_GET{
         }
 
     }
-
+use DDP; p \%may_search;
     $c->stash->{collection} = $c->stash->{collection}->search( {%may_search} )
       if %may_search;
 
