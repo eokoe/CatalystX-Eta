@@ -19,7 +19,7 @@ sub AutoList_around_list_GET {
 
     my @rows;
     while ( my $r = $c->stash->{collection}->next ) {
-        push @rows, $func->($r);
+        push @rows, $func->($r, $self, $c);
     }
     $self->status_ok(
         $c,
