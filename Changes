@@ -1,6 +1,8 @@
 Revision history for CatalystX-Eta
 
 {{$NEXT}}
+
+0.046  2015-08-24 11:58:06 BRT
     - pass $self and $c on build_row (AutoList.pm)
 
 0.045  2015-05-01 18:50:32 BRT
