@@ -1,6 +1,8 @@
 Revision history for CatalystX-Eta
 
 {{$NEXT}}
+    - TypesValidation.pm now looks for $data_from insteald of hardcoded c->req->params
+    - REST.pm does an info instead of error logging when the exception is captured
 
 0.046  2015-08-24 11:58:06 BRT
     - pass $self and $c on build_row (AutoList.pm)
