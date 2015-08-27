@@ -20,9 +20,8 @@ sub end : Private {
     my ( $self, $c ) = @_;
 
     #... do things before Serializing ...
-
     my $code = $c->res->status;
-    if ( $code == 200 and scalar( @{ $c->error } ) ) {
+    if ( scalar( @{ $c->error } ) ) {
         $code = 500;    # We default to 500 for errors unless something else has been set.
 
         my ( $an_error, @other_errors ) = @{ $c->error };
@@ -33,7 +32,8 @@ sub end : Private {
 
             $c->stash->{rest} =
               { error => 'You violated an unique constraint! Please verify your input fields and try again.' };
-            $c->log->error( "Error: " . $an_error->{msg} );
+
+            $c->log->info( "exception treated: " . $an_error->{msg} );
         }
         elsif ( ref $an_error eq 'DBIx::Class::Exception'
             && $an_error->{msg} =~ /is not present/ ) {
@@ -51,11 +51,10 @@ sub end : Private {
 
             $c->stash->{rest} =
               { error => $an_error->{message} };
-            $c->log->error( "Error: " . $an_error->{message} );
+            $c->log->info( "exception treated: " . $an_error->{msg} );
 
         }
         elsif ( ref $an_error eq 'REF' && ref $$an_error eq 'ARRAY' && @$$an_error == 2 ) {
-
             $code = 400;
 
             $c->stash->{rest} =
@@ -63,7 +62,6 @@ sub end : Private {
 
         }
         else {
-
             $c->log->error( Dumper $an_error, @other_errors );
 
             $c->stash->{rest} = { error => 'Internal Server Error' };

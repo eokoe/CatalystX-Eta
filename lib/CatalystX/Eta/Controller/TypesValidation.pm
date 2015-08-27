@@ -13,7 +13,9 @@ sub validate_request_params {
 
         my $me   = $fields{$key};
         my $type = $me->{type};
-        my $val  = $c->req->params->{$key};
+        my $data_from = $self->config->{data_from_body} ? 'data' : 'params';
+
+        my $val  = $c->req->$data_from->{$key};
 
         $val = '' if !defined $val && $me->{clean_undef};
 
