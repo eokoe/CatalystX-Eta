@@ -1,6 +1,8 @@
 Revision history for CatalystX-Eta
 
 {{$NEXT}}
+    - add option list_post_for
+    - check if check-role-right-fields is defined in CheckRoleForPUT.pm and AutoResult.pm
 
 0.047  2015-08-27 18:56:58 BRT
     - TypesValidation.pm now looks for $data_from insteald of hardcoded c->req->params

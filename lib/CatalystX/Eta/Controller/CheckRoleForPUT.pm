@@ -20,7 +20,7 @@ sub CheckRoleForPUT_around_result_PUT {
 
     # if he does not have the role, but is the creator...
     if (
-        $do_detach == 1
+           $do_detach == 1
         && exists $config->{object_key}
         && $c->stash->{ $config->{object_key} }
         && !$config->{check_only_roles}
@@ -32,10 +32,10 @@ sub CheckRoleForPUT_around_result_PUT {
         my $obj = $c->stash->{ $config->{object_key} };
 
         my $obj_id =
-            $obj->can('created_by') ? $obj->created_by
-          : $obj->can('user_id')    ? $obj->user_id
-          : $obj->can('roles') && $obj->can('id') ? $obj->id # user it-self.
-          : -999; # false
+            $obj->can('created_by') && defined $obj->created_by ? $obj->created_by
+          : $obj->can('user_id')    && defined $obj->user_id    ? $obj->user_id
+          : $obj->can('roles')      && $obj->can('id')          ? $obj->id           # user it-self.
+          :                                                       -999;              # false
 
         my $user_id = $c->user->id;
 
@@ -51,7 +51,7 @@ sub CheckRoleForPUT_around_result_PUT {
     }
 
     $self->$orig(@_);
-};
+}
 
 1;
 

@@ -21,7 +21,7 @@ sub AutoResult_around_result_GET {
     $self->status_ok( $c, entity => $ref );
 
     $self->$orig(@_);
-};
+}
 
 around result_PUT => \&AutoResult_around_result_PUT;
 
@@ -34,12 +34,10 @@ sub AutoResult_around_result_PUT {
 
     my $data_from = $self->config->{data_from_body} ? 'data' : 'params';
 
-    my $params = {%{ $c->req->$data_from }};
-    if (
-        exists $self->config->{prepare_params_for_update} &&
-        ref $self->config->{prepare_params_for_update} eq 'CODE'
-    ){
-        $params = $self->config->{prepare_params_for_update}->($self, $c, $params);
+    my $params = { %{ $c->req->$data_from } };
+    if ( exists $self->config->{prepare_params_for_update}
+        && ref $self->config->{prepare_params_for_update} eq 'CODE' ) {
+        $params = $self->config->{prepare_params_for_update}->( $self, $c, $params );
     }
 
     $something->execute(
@@ -48,16 +46,15 @@ sub AutoResult_around_result_PUT {
         with => $params,
     );
 
-
     $self->status_accepted(
         $c,
-        location => $c->uri_for( $self->action_for('result'), [ @{$c->req->captures} ] )->as_string,
+        location => $c->uri_for( $self->action_for('result'), [ @{ $c->req->captures } ] )->as_string,
         entity => { id => $something->id }
     ) if $something;
 
     $self->$orig(@_);
 
-};
+}
 
 around result_DELETE => \&AutoResult_around_result_DELETE;
 
@@ -78,7 +75,7 @@ sub AutoResult_around_result_DELETE {
 
     # if he does not have the role, but is the creator...
     if (
-        $do_detach == 1
+           $do_detach == 1
         && exists $config->{object_key}
         && $c->stash->{ $config->{object_key} }
         && (   $c->stash->{ $config->{object_key} }->can('id')
@@ -87,10 +84,10 @@ sub AutoResult_around_result_DELETE {
       ) {
         my $obj = $c->stash->{ $config->{object_key} };
         my $obj_id =
-            $obj->can('created_by') ? $obj->created_by
-          : $obj->can('user_id')    ? $obj->user_id
-          : $obj->can('roles') && $obj->can('id') ? $obj->id # user it-self.
-          : -999; # false
+            $obj->can('created_by') && defined $obj->created_by ? $obj->created_by
+          : $obj->can('user_id')    && defined $obj->user_id    ? $obj->user_id
+          : $obj->can('roles')      && $obj->can('id')          ? $obj->id           # user it-self.
+          :                                                       -999;              # false
 
         my $user_id = $c->user->id;
 
@@ -119,6 +116,6 @@ sub AutoResult_around_result_DELETE {
 
     $self->status_no_content($c);
     $self->$orig(@_);
-};
+}
 
 1;

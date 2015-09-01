@@ -52,7 +52,7 @@ sub AutoList_around_list_POST {
 
     my $something = $c->model( $self->config->{result} )->execute(
         $c,
-        for  => 'create',
+        for => ( exists $c->stash->{list_post_for} ? $c->stash->{list_post_for} : 'create' ),
         with => {
             %$params,
             created_by => $c->user->id,
