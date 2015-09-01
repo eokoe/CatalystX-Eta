@@ -1,7 +1,9 @@
 Revision history for CatalystX-Eta
 
 {{$NEXT}}
-    - add option list_post_for
+
+0.048  2015-09-01 16:16:28 BRT
+    - add option list_post_for for change execute name on create.
     - check if check-role-right-fields is defined in CheckRoleForPUT.pm and AutoResult.pm
 
 0.047  2015-08-27 18:56:58 BRT
