@@ -1,6 +1,8 @@
 Revision history for CatalystX-Eta
 
 {{$NEXT}}
+    - split AutoResult into AutoResultGET, AutoResultDELETE, AutoResultPUT
+    - split AutoList into AutoListPOST, AutoListGET
 
 0.048  2015-09-01 16:16:28 BRT
     - add option list_post_for for change execute name on create.

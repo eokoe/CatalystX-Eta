@@ -7,7 +7,7 @@ requires 'list_GET';
 
 around list_GET => \&Search_arround_list_GET;
 
-sub Search_arround_list_GET{
+sub Search_arround_list_GET {
     my $orig = shift;
     my $self = shift;
 
@@ -29,7 +29,7 @@ sub Search_arround_list_GET{
             else {
                 my $type = $self->config->{search_ok}{$key_ok};
 
-                for my $exp (qw|< > >= <= +< +> +>= +<=|, ( $type eq 'Str' ? qw/like ilike/ : ())) {
+                for my $exp ( qw|< > >= <= +< +> +>= +<=|, ( $type eq 'Str' ? qw/like ilike/ : () ) ) {
 
                     if ( exists $c->req->params->{"$key_ok:$exp"} ) {
                         my $tmp = "$exp";    # not more read only
@@ -103,7 +103,7 @@ sub Search_arround_list_GET{
     $c->stash->{collection} = $c->stash->{collection}->search( {%may_search} )
       if %may_search;
 
-    if ( $c->req->params->{limit_rows} && $c->req->params->{limit_rows} =~ /^[0-9]+$/ ) {
+    if ( exists $c->req->params->{limit_rows} && $c->req->params->{limit_rows} =~ /^[0-9]+$/ ) {
         $c->stash->{collection} = $c->stash->{collection}->search(
             undef,
             {
@@ -113,7 +113,7 @@ sub Search_arround_list_GET{
     }
 
     $self->$orig(@_);
-};
+}
 
 1;
 
