@@ -1,6 +1,8 @@
 Revision history for CatalystX-Eta
 
 {{$NEXT}}
+
+0.05  2015-09-03 20:19:24 BRT
     - split AutoResult into AutoResultGET, AutoResultDELETE, AutoResultPUT
     - split AutoList into AutoListPOST, AutoListGET
 
