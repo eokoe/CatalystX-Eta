@@ -4,7 +4,6 @@ use Moose::Role;
 
 requires 'list_POST';
 
-
 around list_POST => \&AutoList_around_list_POST;
 
 sub AutoList_around_list_POST {
@@ -16,13 +15,13 @@ sub AutoList_around_list_POST {
 
     $self->status_bad_request( $c, message => 'missing data' ), $c->detach unless ref $c->req->$data_from eq 'HASH';
 
-    my $params = {%{ $c->req->$data_from }};
-    if (
-        exists $self->config->{prepare_params_for_create} &&
-        ref $self->config->{prepare_params_for_create} eq 'CODE'
-    ){
-        $params = $self->config->{prepare_params_for_create}->($self, $c, $params);
+    my $params = { %{ $c->req->$data_from } };
+    if ( exists $self->config->{prepare_params_for_create}
+        && ref $self->config->{prepare_params_for_create} eq 'CODE' ) {
+        $params = $self->config->{prepare_params_for_create}->( $self, $c, $params );
     }
+
+    my $primary_column = $self->config->{primary_key_column} || 'id';
 
     my $something = $c->model( $self->config->{result} )->execute(
         $c,
@@ -36,16 +35,17 @@ sub AutoList_around_list_POST {
 
     $self->status_created(
         $c,
-        location => $c->uri_for( $self->action_for('result'), [ @{$c->req->captures}, $something->id ] )->as_string,
+        location => $c->uri_for( $self->action_for('result'), [ @{ $c->req->captures }, $something->$primary_column ] )
+          ->as_string,
         entity => {
-            id => $something->id
+            $primary_column => $something->$primary_column
         }
     );
 
-    $self->$orig(@_, $something );
+    $self->$orig( @_, $something );
 
     return 1;
-};
+}
 
 1;
 

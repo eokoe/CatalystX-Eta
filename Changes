@@ -1,6 +1,8 @@
 Revision history for CatalystX-Eta
 
 {{$NEXT}}
+    - only check roles if they are defined in config.
+    - allow other than 'id' column as primary key
 
 0.05  2015-09-03 20:19:24 BRT
     - split AutoResult into AutoResultGET, AutoResultDELETE, AutoResultPUT

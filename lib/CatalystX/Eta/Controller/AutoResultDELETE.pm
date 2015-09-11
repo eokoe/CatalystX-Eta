@@ -16,38 +16,41 @@ sub AutoResult_around_result_DELETE {
     $self->status_gone( $c, message => 'object already deleted' ), $c->detach
       unless $something;
 
-    my $do_detach = 0;
-    if ( !$c->check_any_user_role( @{ $config->{delete_roles} } ) ) {
-        $do_detach = 1;
-    }
+    if ( exists $self->config->{delete_roles} ) {
+        my $do_detach = 0;
+        if ( !$c->check_any_user_role( @{ $config->{delete_roles} } ) ) {
+            $do_detach = 1;
+        }
 
-    # if he does not have the role, but is the creator...
-    if (
-           $do_detach == 1
-        && exists $config->{object_key}
-        && $c->stash->{ $config->{object_key} }
-        && (   $c->stash->{ $config->{object_key} }->can('id')
-            || $c->stash->{ $config->{object_key} }->can('user_id')
-            || $c->stash->{ $config->{object_key} }->can('created_by') )
-      ) {
-        my $obj = $c->stash->{ $config->{object_key} };
-        my $obj_id =
-            $obj->can('created_by') && defined $obj->created_by ? $obj->created_by
-          : $obj->can('user_id')    && defined $obj->user_id    ? $obj->user_id
-          : $obj->can('roles')      && $obj->can('id')          ? $obj->id           # user it-self.
-          :                                                       -999;              # false
+        # if he does not have the role, but is the creator...
+        if (
+               $do_detach == 1
+            && exists $config->{object_key}
+            && $c->stash->{ $config->{object_key} }
+            && (   $c->stash->{ $config->{object_key} }->can('id')
+                || $c->stash->{ $config->{object_key} }->can('user_id')
+                || $c->stash->{ $config->{object_key} }->can('created_by') )
+          ) {
+            my $obj = $c->stash->{ $config->{object_key} };
+            my $obj_id =
+                $obj->can('created_by') && defined $obj->created_by ? $obj->created_by
+              : $obj->can('user_id')    && defined $obj->user_id    ? $obj->user_id
+              : $obj->can('roles')      && $obj->can('id')          ? $obj->id           # user it-self.
+              :                                                       -999;              # false
 
-        my $user_id = $c->user->id;
+            my $user_id = $c->user->id;
 
-        $self->status_forbidden( $c, message => $config->{object_key} . ".invalid [$obj_id!=$user_id]", ), $c->detach
-          if $obj_id != $user_id;
+            $self->status_forbidden( $c, message => $config->{object_key} . ".invalid [$obj_id!=$user_id]", ),
+              $c->detach
+              if $obj_id != $user_id;
 
-        $do_detach = 0;
-    }
+            $do_detach = 0;
+        }
 
-    if ($do_detach) {
-        $self->status_forbidden( $c, message => "insufficient privileges" );
-        $c->detach;
+        if ($do_detach) {
+            $self->status_forbidden( $c, message => "insufficient privileges" );
+            $c->detach;
+        }
     }
 
     $c->model('DB')->txn_do(

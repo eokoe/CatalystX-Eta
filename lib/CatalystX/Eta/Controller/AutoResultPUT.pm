@@ -20,17 +20,22 @@ sub AutoResult_around_result_PUT {
         $params = $self->config->{prepare_params_for_update}->( $self, $c, $params );
     }
 
-    $something->execute(
+    $something = $something->execute(
         $c,
         for => ( exists $c->stash->{result_put_for} ? $c->stash->{result_put_for} : 'update' ),
         with => $params,
     );
 
+    my $primary_column = $self->config->{primary_key_column} || 'id';
+
+    my @params = @{ $c->req->captures };
+    $params[-1] = $something->$primary_column;
+
     $self->status_accepted(
         $c,
-        location => $c->uri_for( $self->action_for('result'), [ @{ $c->req->captures } ] )->as_string,
-        entity => { id => $something->id }
-    ) if $something;
+        location => $c->uri_for( $self->action_for('result'), [@params] )->as_string,
+        entity => { $primary_column => $something->$primary_column }
+    );
 
     $self->$orig(@_);
 

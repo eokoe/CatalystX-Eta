@@ -14,13 +14,15 @@ sub CheckRoleForPOST_around_list_POST {
     my ( $c, $id ) = @_;
     my $do_detach = 0;
 
-    if ( !$c->check_any_user_role( @{ $config->{create_roles} } ) ) {
-        $self->status_forbidden( $c, message => "insufficient privileges" );
-        $c->detach;
-    }
+    if ( exists $self->config->{create_roles} ) {
+        if ( !$c->check_any_user_role( @{ $config->{create_roles} } ) ) {
+            $self->status_forbidden( $c, message => "insufficient privileges" );
+            $c->detach;
+        }
 
+    }
     $self->$orig(@_);
-};
+}
 
 1;
 

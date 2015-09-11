@@ -14,40 +14,44 @@ sub CheckRoleForPUT_around_result_PUT {
     my ( $c, $id ) = @_;
     my $do_detach = 0;
 
-    if ( !$c->check_any_user_role( @{ $config->{update_roles} } ) ) {
-        $do_detach = 1;
-    }
+    if ( exists $self->config->{update_roles} ) {
 
-    # if he does not have the role, but is the creator...
-    if (
-           $do_detach == 1
-        && exists $config->{object_key}
-        && $c->stash->{ $config->{object_key} }
-        && !$config->{check_only_roles}
-        && (   $c->stash->{ $config->{object_key} }->can('id')
-            || $c->stash->{ $config->{object_key} }->can('user_id')
-            || $c->stash->{ $config->{object_key} }->can('created_by') )
+        if ( !$c->check_any_user_role( @{ $config->{update_roles} } ) ) {
+            $do_detach = 1;
+        }
 
-      ) {
-        my $obj = $c->stash->{ $config->{object_key} };
+        # if he does not have the role, but is the creator...
+        if (
+               $do_detach == 1
+            && exists $config->{object_key}
+            && $c->stash->{ $config->{object_key} }
+            && !$config->{check_only_roles}
+            && (   $c->stash->{ $config->{object_key} }->can('id')
+                || $c->stash->{ $config->{object_key} }->can('user_id')
+                || $c->stash->{ $config->{object_key} }->can('created_by') )
 
-        my $obj_id =
-            $obj->can('created_by') && defined $obj->created_by ? $obj->created_by
-          : $obj->can('user_id')    && defined $obj->user_id    ? $obj->user_id
-          : $obj->can('roles')      && $obj->can('id')          ? $obj->id           # user it-self.
-          :                                                       -999;              # false
+          ) {
+            my $obj = $c->stash->{ $config->{object_key} };
 
-        my $user_id = $c->user->id;
+            my $obj_id =
+                $obj->can('created_by') && defined $obj->created_by ? $obj->created_by
+              : $obj->can('user_id')    && defined $obj->user_id    ? $obj->user_id
+              : $obj->can('roles')      && $obj->can('id')          ? $obj->id           # user it-self.
+              :                                                       -999;              # false
 
-        $self->status_forbidden( $c, message => $config->{object_key} . ".invalid [$obj_id!=$user_id]", ), $c->detach
-          if $obj_id != $user_id;
+            my $user_id = $c->user->id;
 
-        $do_detach = 0;
-    }
+            $self->status_forbidden( $c, message => $config->{object_key} . ".invalid [$obj_id!=$user_id]", ),
+              $c->detach
+              if $obj_id != $user_id;
 
-    if ($do_detach) {
-        $self->status_forbidden( $c, message => "insufficient privileges" );
-        $c->detach;
+            $do_detach = 0;
+        }
+
+        if ($do_detach) {
+            $self->status_forbidden( $c, message => "insufficient privileges" );
+            $c->detach;
+        }
     }
 
     $self->$orig(@_);
