@@ -1,6 +1,8 @@
 Revision history for CatalystX-Eta
 
 {{$NEXT}}
+
+0.07  2015-09-28 19:34:02 BRT
     - allow use for no_user when you don't have c->user on AutoListPOST
 
 0.06  2015-09-11 12:12:52 BRT
