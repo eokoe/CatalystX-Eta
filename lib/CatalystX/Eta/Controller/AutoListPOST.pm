@@ -28,8 +28,15 @@ sub AutoList_around_list_POST {
         for => ( exists $c->stash->{list_post_for} ? $c->stash->{list_post_for} : 'create' ),
         with => {
             %$params,
-            created_by => $c->user->id,
-            user_id    => $c->user->id,
+
+            (
+                $self->config->{no_user} ? () : (
+
+                    created_by => $c->user->id,
+                    user_id    => $c->user->id,
+                )
+            ),
+
         }
     );
 
