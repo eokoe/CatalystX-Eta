@@ -1,6 +1,7 @@
 Revision history for CatalystX-Eta
 
 {{$NEXT}}
+    - allow use for no_user when you don't have c->user on AutoListPOST
 
 0.06  2015-09-11 12:12:52 BRT
     - only check roles if they are defined in config.
