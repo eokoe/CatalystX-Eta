@@ -1,6 +1,8 @@
 Revision history for CatalystX-Eta
 
 {{$NEXT}}
+
+0.08  2015-09-30 20:42:58 BRT
     - allow other than 'int' on sub object.
         object_verify_type can be set to 'int', 'uuid4', or 'none'
         default to 'int'
