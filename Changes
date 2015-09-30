@@ -1,6 +1,9 @@
 Revision history for CatalystX-Eta
 
 {{$NEXT}}
+    - allow other than 'int' on sub object.
+        object_verify_type can be set to 'int', 'uuid4', or 'none'
+        default to 'int'
 
 0.07  2015-09-28 19:34:02 BRT
     - allow use for no_user when you don't have c->user on AutoListPOST
