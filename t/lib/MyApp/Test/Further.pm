@@ -46,7 +46,12 @@ my $obj = CatalystX::Eta::Test::REST->new(
     },
     decode_response => sub {
         my $res = shift;
-        return decode_json( $res->content );
+
+        if ( lc $res->header('Content-Type') eq "application/json" ) {
+            return decode_json($res->content);
+        } else {
+            return $res->content;
+        }
     }
 );
 
